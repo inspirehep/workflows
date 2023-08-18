@@ -53,7 +53,6 @@ def process_untill_breakpoint():
     
     approval_check = ShortCircuitOperator(
         task_id='check_approval',
-        # skip_till_task_id='validate',
         ignore_downstream_trigger_rules=False,
         python_callable=check_approval,
         provide_context=True
@@ -68,6 +67,5 @@ def process_untill_breakpoint():
     validation = validate()
 
     approval_check >> fetch_document_task >> normalize_affiliations_task >> auto_approval >> validation
-    # approval_check >> validation
 
 process_untill_breakpoint()
