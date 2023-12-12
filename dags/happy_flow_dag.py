@@ -19,8 +19,7 @@ def happy_flow_dag():
 
     @task()
     def normalize_affiliations(data):
-        from hooks.inspire_connection_hook import \
-            call_inspire_api_with_hook
+        from hooks.inspire_connection_hook import call_inspire_api_with_hook
         from include.inspire.affiliations_normalization import \
             assign_normalized_affiliations
 

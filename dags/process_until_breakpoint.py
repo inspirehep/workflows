@@ -2,19 +2,21 @@ import datetime
 import json
 
 from airflow.decorators import dag, task
-from operators.short_circuit_operator import CustomShortCircuitOperator
 from airflow.operators.python import ShortCircuitOperator
 from airflow.utils.trigger_rule import TriggerRule
 
 
-@dag(start_date=datetime.datetime(2021, 1, 1), schedule_interval=None, params={'approved': True})
+@dag(
+    start_date=datetime.datetime(2021, 1, 1),
+    schedule_interval=None,
+    params={"approved": True},
+)
 def process_untill_breakpoint():
-
     def check_approval(**context):
         if context["params"]["approved"]:
             return False
         return True
-    
+
     @task
     def fetch_document(filename: str) -> dict:
         from include.utils import get_s3_client
@@ -27,8 +29,7 @@ def process_untill_breakpoint():
 
     @task()
     def normalize_affiliations(data):
-        from hooks.inspire_connection_hook import \
-            call_inspire_api_with_hook
+        from hooks.inspire_connection_hook import call_inspire_api_with_hook
         from include.inspire.affiliations_normalization import \
             assign_normalized_affiliations
 
@@ -41,7 +42,7 @@ def process_untill_breakpoint():
     def auto_approval(**kwargs):
         from include.inspire.approval import auto_approve
 
-        data = kwargs['task_instance'].xcom_pull(task_ids='normalize_affiliations')
+        data = kwargs["task_instance"].xcom_pull(task_ids="normalize_affiliations")
         print(data)
         if auto_approve(data):
             return True
@@ -50,22 +51,27 @@ def process_untill_breakpoint():
     @task(trigger_rule=TriggerRule.NONE_FAILED)
     def validate():
         return
-    
+
     approval_check = ShortCircuitOperator(
-        task_id='check_approval',
+        task_id="check_approval",
         ignore_downstream_trigger_rules=False,
         python_callable=check_approval,
-        provide_context=True
+        provide_context=True,
     )
     fetch_document_task = fetch_document("test.json")
     normalize_affiliations_task = normalize_affiliations(fetch_document_task)
     auto_approval = ShortCircuitOperator(
-        task_id='auto_approval',
-        python_callable=auto_approval,
-        provide_context=True
+        task_id="auto_approval", python_callable=auto_approval, provide_context=True
     )
     validation = validate()
 
-    approval_check >> fetch_document_task >> normalize_affiliations_task >> auto_approval >> validation
+    (
+        approval_check
+        >> fetch_document_task
+        >> normalize_affiliations_task
+        >> auto_approval
+        >> validation
+    )
+
 
 process_untill_breakpoint()

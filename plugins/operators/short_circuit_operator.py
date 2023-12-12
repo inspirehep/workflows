@@ -1,4 +1,4 @@
-from airflow.operators.python import PythonOperator, SkipMixin, ShortCircuitOperator
+from airflow.operators.python import ShortCircuitOperator, SkipMixin
 
 
 class CustomShortCircuitOperator(ShortCircuitOperator, SkipMixin):
@@ -23,13 +23,13 @@ class CustomShortCircuitOperator(ShortCircuitOperator, SkipMixin):
         if not found_tasks:
             found_tasks = []
         direct_relatives = task.get_direct_relatives(upstream=False)
-        self.log.info(f'relatices {direct_relatives}')
+        self.log.info(f"relatices {direct_relatives}")
         for t in direct_relatives:
             if self.skip_till_task_id and t.task_id == self.skip_till_task_id:
-                self.log.info(f'found task {t.task_id}. exiting')
+                self.log.info(f"found task {t.task_id}. exiting")
                 break
             if len(t.upstream_task_ids) == 1:
-                self.log.info(f'appending task {t.task_id}')
+                self.log.info(f"appending task {t.task_id}")
                 found_tasks.append(t)
                 self.find_tasks_to_skip(t, found_tasks)
         return found_tasks
@@ -39,22 +39,16 @@ class CustomShortCircuitOperator(ShortCircuitOperator, SkipMixin):
         self.log.info("Condition result is %s", condition)
 
         if condition:
-            self.log.info('Proceeding with downstream tasks...')
+            self.log.info("Proceeding with downstream tasks...")
             return
 
-        self.log.info(
-            'Skipping downstream tasks that only rely on this path...')
+        self.log.info("Skipping downstream tasks that only rely on this path...")
 
-        tasks_to_skip = self.find_tasks_to_skip(context['task'])
+        tasks_to_skip = self.find_tasks_to_skip(context["task"])
         self.log.info("Tasks to skip: %s", tasks_to_skip)
 
         if tasks_to_skip:
-            self.log.info(
-            f'Skipping {tasks_to_skip}')
-            self.skip(
-                context['dag_run'], 
-                context['ti'].execution_date,
-                tasks_to_skip
-            )
+            self.log.info(f"Skipping {tasks_to_skip}")
+            self.skip(context["dag_run"], context["ti"].execution_date, tasks_to_skip)
 
         self.log.info("Done.")

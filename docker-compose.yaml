@@ -91,7 +91,7 @@ x-airflow-common:
 
   user: "${AIRFLOW_UID:-50000}:0"
   extra_hosts:
-    - "host.docker.internal:host-gateway"  
+    - "host.docker.internal:host-gateway"
   depends_on:
     &airflow-common-depends-on
     redis:
@@ -114,7 +114,7 @@ services:
       retries: 5
       start_period: 5s
     restart: always
-    ports: 
+    ports:
     - 5431:5432
 
   inspire-db:
@@ -201,7 +201,7 @@ services:
       <<: *airflow-common-depends-on
       airflow-init:
         condition: service_completed_successfully
-  
+
   airflow-triggerer:
     <<: *airflow-common
     command: triggerer
@@ -333,11 +333,11 @@ services:
   s3:
     image: minio/minio
     extra_hosts:
-      - "host.docker.internal:host-gateway"  
+      - "host.docker.internal:host-gateway"
     expose:
       - 9000
       - 9001
-    command: server /data --console-address ":9001"    
+    command: server /data --console-address ":9001"
     ports:
         # Bind explicitly to 127.0.0.1
         - "127.0.0.1:9000:9000"
@@ -362,4 +362,3 @@ services:
 volumes:
   postgres-db-volume:
   inspire-db-volume:
-
