@@ -3,13 +3,16 @@ import json
 
 from airflow.decorators import dag, task
 from airflow.sensors.sql import SqlSensor
+from hooks.inspirehep.inspire_http_hook import InspireHttpHook
 
 
 @dag(start_date=datetime.datetime(2021, 1, 1), schedule_interval=None)
 def happy_flow_dag():
+    inspire_http_hook = InspireHttpHook()
+
     @task
     def fetch_document(filename: str) -> dict:
-        from include.utils import get_s3_client
+        from include.utils.utils import get_s3_client
 
         s3_client = get_s3_client()
         s3_client.download_file("inspire-incoming", filename, f"./{filename}")
@@ -19,13 +22,14 @@ def happy_flow_dag():
 
     @task()
     def normalize_affiliations(data):
-        from hooks.inspire_connection_hook import call_inspire_api_with_hook
         from include.inspire.affiliations_normalization import \
             assign_normalized_affiliations
 
         endpoint = "/curation/literature/affiliations-normalization"
         request_data = {"authors": data["authors"], "workflow_id": 1}
-        result = call_inspire_api_with_hook(endpoint=endpoint, data=request_data)
+        result = inspire_http_hook.call_api(
+            endpoint=endpoint, data=request_data, method="GET"
+        )
         data = assign_normalized_affiliations(result.json(), data=data)
         return data
 
