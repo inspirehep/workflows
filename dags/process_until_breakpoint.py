@@ -19,7 +19,7 @@ def process_untill_breakpoint():
 
     @task
     def fetch_document(filename: str) -> dict:
-        from include.utils import get_s3_client
+        from include.utils.utils import get_s3_client
 
         s3_client = get_s3_client()
         s3_client.download_file("inspire-incoming", filename, f"./{filename}")
