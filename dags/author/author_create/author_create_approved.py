@@ -1,32 +1,31 @@
 import datetime
-import json
 import logging
 
 from airflow.decorators import dag, task
 from airflow.models.param import Param
 from airflow.utils.trigger_rule import TriggerRule
-from hooks.backoffice import (WorkflowManagementHook,
-                              WorkflowTicketManagementHook)
+from hooks.backoffice import WorkflowManagementHook, WorkflowTicketManagementHook
 from hooks.inspirehep.inspire_http_hook import InspireHttpHook
-from hooks.inspirehep.inspire_http_record_management_hook import \
-    InspireHTTPRecordManagementHook
+from hooks.inspirehep.inspire_http_record_management_hook import (
+    InspireHTTPRecordManagementHook,
+)
 from include.utils.set_workflow_status import (
-    get_wf_status_from_inspire_response, set_workflow_status_to_error)
+    get_wf_status_from_inspire_response,
+    set_workflow_status_to_error,
+)
 
 logger = logging.getLogger(__name__)
-default_args = {
-    "start_date": datetime.datetime(2021, 1, 1),
-    "schedule_interval": None,
-}
 
 
 @dag(
-    default_args=default_args,
     params={
         "workflow_id": Param(type="string", default=""),
         "data": Param(type="object", default={}),
         "create_ticket": Param(type="boolean", default=False),
     },
+    start_date=datetime.datetime(2024, 5, 5),
+    schedule_interval=None,
+    catchup=False,
     on_failure_callback=set_workflow_status_to_error,  # TODO: what if callback fails? Data in backoffice not up to date!
 )
 def author_create_approved_dag():
@@ -66,7 +65,7 @@ def author_create_approved_dag():
 
     @task
     def create_author_create_curation_ticket(**context: dict) -> None:
-        endpoint = "/tickets/create-with-template"
+        endpoint = "api/tickets/create"
         request_data = {
             "functional_category": "",
             "workflow_id": context["params"]["workflow_id"],
@@ -98,9 +97,7 @@ def author_create_approved_dag():
             workflow_data["data"]["control_number"] = control_number
             workflow_management_hook.partial_update_workflow(
                 workflow_id=context["params"]["workflow_id"],
-                workflow_partial_update_data={
-                    "data": json.dumps(workflow_data["data"])
-                },
+                workflow_partial_update_data={"data": workflow_data["data"]},
             )
         return status
 
@@ -119,7 +116,7 @@ def author_create_approved_dag():
         ticket_id = workflow_ticket_management_hook.get_ticket(
             workflow_id=context["params"]["workflow_id"], ticket_type=ticket_type
         )["ticket_id"]
-        endpoint = "/tickets/resolve"
+        endpoint = "api/tickets/resolve"
         request_data = {"ticket_id": ticket_id}
         inspire_http_hook.call_api(endpoint=endpoint, data=request_data, method="POST")
 

@@ -19,10 +19,10 @@ class WorkflowTicketManagementHook(BackofficeHook):
         headers: dict = None,
     ) -> None:
         super().__init__(method, http_conn_id, headers)
-        self.endpoint = "/workflow-ticket/"
+        self.endpoint = "api/workflow-ticket/"
 
     def get_ticket(self, workflow_id: str, ticket_type: str) -> dict:
-        endpoint = f"/workflow-ticket/{workflow_id}/"
+        endpoint = f"api/workflow-ticket/{workflow_id}/"
         params = {"ticket_type": ticket_type}
         response = self.run_with_advanced_retry(
             _retry_args=self.tenacity_retry_kwargs,
@@ -35,7 +35,7 @@ class WorkflowTicketManagementHook(BackofficeHook):
     def create_ticket_entry(
         self, workflow_id: str, ticket_id: str, ticket_type: str
     ) -> Response:
-        endpoint = f"/workflow-ticket/"
+        endpoint = "api/workflow-ticket/"
         data = {
             "ticket_type": ticket_type,
             "ticket_id": ticket_id,

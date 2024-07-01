@@ -14,3 +14,9 @@ repos:
     hooks:
     -   id: isort
         name: isort (python)
+        args: ["--profile", "black"]
+-   repo: https://github.com/pycqa/flake8
+    rev: "3.9.2"
+    hooks:
+      - id: flake8
+        args: ["--config=setup.cfg"]

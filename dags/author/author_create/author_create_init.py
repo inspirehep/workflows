@@ -3,25 +3,21 @@ import logging
 
 from airflow.decorators import dag, task
 from airflow.models.param import Param
-from hooks.backoffice import (WorkflowManagementHook,
-                              WorkflowTicketManagementHook)
+from hooks.backoffice import WorkflowManagementHook, WorkflowTicketManagementHook
 from hooks.inspirehep.inspire_http_hook import InspireHttpHook
 from include.utils.set_workflow_status import set_workflow_status_to_error
 
 logger = logging.getLogger(__name__)
 
-default_args = {
-    "start_date": datetime.datetime(2021, 1, 1),
-    "schedule_interval": None,
-}
-
 
 @dag(
-    default_args=default_args,
     params={
         "workflow_id": Param(type="string", default=""),
         "data": Param(type="object", default={}),
     },
+    start_date=datetime.datetime(2024, 5, 5),
+    schedule_interval=None,
+    catchup=False,
     on_failure_callback=set_workflow_status_to_error,  # TODO: what if callback fails? Data in backoffice not up to date!
 )
 def author_create_initialization_dag():
@@ -46,7 +42,7 @@ def author_create_initialization_dag():
 
     @task()
     def create_author_create_user_ticket(**context: dict) -> None:
-        endpoint = "/tickets/create-with-template"
+        endpoint = "/api/tickets/create"
         request_data = {
             "functional_category": "Author curation",
             "template": "user_new_author",

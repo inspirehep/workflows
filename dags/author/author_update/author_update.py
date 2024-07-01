@@ -2,22 +2,25 @@ import datetime
 
 from airflow.decorators import dag, task
 from airflow.models.param import Param
-from hooks.backoffice import (WorkflowManagementHook,
-                              WorkflowTicketManagementHook)
+from hooks.backoffice import WorkflowManagementHook, WorkflowTicketManagementHook
 from hooks.inspirehep.inspire_http_hook import InspireHttpHook
-from hooks.inspirehep.inspire_http_record_management_hook import \
-    InspireHTTPRecordManagementHook
+from hooks.inspirehep.inspire_http_record_management_hook import (
+    InspireHTTPRecordManagementHook,
+)
 from include.utils.set_workflow_status import (
-    get_wf_status_from_inspire_response, set_workflow_status_to_error)
+    get_wf_status_from_inspire_response,
+    set_workflow_status_to_error,
+)
 
 
 @dag(
-    start_date=datetime.datetime(2021, 1, 1),
+    start_date=datetime.datetime(2024, 5, 5),
     schedule_interval=None,
     params={
         "workflow_id": Param(type="string", default=""),
         "data": Param(type="object", default={}),
     },
+    catchup=False,
     on_failure_callback=set_workflow_status_to_error,  # TODO: what if callback fails? Data in backoffice not up to date!
 )
 def author_update_dag():
