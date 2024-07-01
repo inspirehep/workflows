@@ -8,6 +8,13 @@ The setup is done with docker-compose. In order to run use
 docker-compose up -d
 ```
 
+in the UI go to Admin>Connections and set:
+- backoffice_conn: http host.docker.internal:8000
+- inspire_connection: https://inspirebeta.net
+in the UI go to Admin>Variables and set:
+- backoffice_token	auth token from django for a superuser
+- inspire_token: in `inspirehep-qa` container use the shell to generate a token
+
 Also, for the dags there's a need to define an airflow variable `inspire_token` which is a token to inspirebeta.net.
 It can be added via UI (go to Admin -> Variables).
 

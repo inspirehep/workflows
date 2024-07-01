@@ -25,6 +25,7 @@ class BackofficeHook(HttpHook):
         self.headers = headers or {
             "Authorization": f'Token {Variable.get("backoffice_token")}',
             "Accept": "application/json",
+            "Content-Type": "application/json",
         }
 
     @property
@@ -51,8 +52,8 @@ class BackofficeHook(HttpHook):
         else:
             url = self.base_url + endpoint
 
-        req = requests.Request(method, url, data=data, headers=headers, params=params)
+        req = requests.Request(method, url, json=data, headers=headers, params=params)
 
         prepped_request = session.prepare_request(req)
-        self.log.info(f"Sending '%s' to url: %s", self.method, url)
+        self.log.info("Sending '%s' to url: %s", method, url)
         return self.run_and_check(session, prepped_request, extra_options)

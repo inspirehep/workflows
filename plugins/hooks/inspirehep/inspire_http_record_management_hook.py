@@ -40,5 +40,5 @@ class InspireHTTPRecordManagementHook(InspireHttpHook):
             method="POST",
             headers=self.headers,
             json=data,
-            endpoint=f"/{pid_type}",
+            endpoint=f"api/{pid_type}",
         )
