@@ -1,0 +1,178 @@
+{
+    "$schema": "https://inspirehep.net/schemas/records/hep.json",
+    "_collections": [
+        "Literature"
+    ],
+    "abstracts": [
+        {
+            "source": "arXiv",
+            "value": "Time series analysis applied to occupational accident reports is a powerful tool for understanding the evolution of occupational accidents over time. It provides valuable information to make informed decisions. In this study, data from reports of work accidents collected from the MINISTRY OF LABOR AND EMPLOYMENT PROMOTION. MTPE were analyzed by time series. Significant patterns and trends in accident reporting have been identified, leading to more effective prevention strategies and better health and safety management."
+        }
+    ],
+    "acquisition_source": {
+        "datetime": "2023-07-27T02:33:58.404200",
+        "method": "hepcrawl",
+        "source": "arXiv",
+        "submission_number": "7bf95cd82c2511ee9b96bea7f28f975c"
+    },
+    "arxiv_eprints": [
+        {
+            "categories": [
+                "stat.AP"
+            ],
+            "value": "2307.13748"
+        }
+    ],
+    "authors": [
+        {
+            "full_name": "Cayo, Tony Gabriel-Fernandez",
+            "raw_affiliations": [
+                {
+                    "value": "Faculty of Statistic and Computer Engineering, Universidad Nacional del Altiplano de Puno, P.O. Box 291 Puno -Peru."
+                }
+            ]
+        },
+        {
+            "full_name": "Torres-Cruz, Fred",
+            "raw_affiliations": [
+                {
+                    "value": "Faculty of Statistic and Computer Engineering, Universidad Nacional del Altiplano de Puno,P.O. Box 291 Puno -Peru."
+                }
+            ]
+        }
+    ],
+    "citeable": true,
+    "curated": false,
+    "document_type": [
+        "article"
+    ],
+    "documents": [
+        {
+            "fulltext": true,
+            "hidden": true,
+            "key": "2307.13748.pdf",
+            "material": "preprint",
+            "original_url": "http://export.arxiv.org/pdf/2307.13748",
+            "source": "arxiv",
+            "url": "/api/files/55bbd76b-1838-4b46-ae0b-b9faf8187f8c/2307.13748.pdf"
+        }
+    ],
+    "figures": [
+        {
+            "caption": "data collected from MTC:",
+            "key": "w0_accidentes.png",
+            "label": "fig:fro",
+            "material": "preprint",
+            "source": "arxiv",
+            "url": "/api/files/55bbd76b-1838-4b46-ae0b-b9faf8187f8c/w0_accidentes.png"
+        },
+        {
+            "caption": "you can see the trend over time:",
+            "key": "w1_nat.png",
+            "label": "fig:fro",
+            "material": "preprint",
+            "source": "arxiv",
+            "url": "/api/files/55bbd76b-1838-4b46-ae0b-b9faf8187f8c/w1_nat.png"
+        },
+        {
+            "caption": "our data is sorted decently",
+            "key": "w2_NAT2.png",
+            "label": "fig:fro",
+            "material": "preprint",
+            "source": "arxiv",
+            "url": "/api/files/55bbd76b-1838-4b46-ae0b-b9faf8187f8c/w2_NAT2.png"
+        },
+        {
+            "caption": "sample of the differences of the four data",
+            "key": "w3_serie.png",
+            "label": "fig:fro",
+            "material": "preprint",
+            "source": "arxiv",
+            "url": "/api/files/55bbd76b-1838-4b46-ae0b-b9faf8187f8c/w3_serie.png"
+        },
+        {
+            "caption": "acf.pdf",
+            "key": "w4_acf.png",
+            "label": "fig:fro",
+            "material": "preprint",
+            "source": "arxiv",
+            "url": "/api/files/55bbd76b-1838-4b46-ae0b-b9faf8187f8c/w4_acf.png"
+        },
+        {
+            "caption": "we make an autocorrelation",
+            "key": "w5_strella.png",
+            "label": "fig:fro",
+            "material": "preprint",
+            "source": "arxiv",
+            "url": "/api/files/55bbd76b-1838-4b46-ae0b-b9faf8187f8c/w5_strella.png"
+        },
+        {
+            "caption": "We can visualize the series by graphing it",
+            "key": "w6_error.png",
+            "label": "fig:fro",
+            "material": "preprint",
+            "source": "arxiv",
+            "url": "/api/files/55bbd76b-1838-4b46-ae0b-b9faf8187f8c/w6_error.png"
+        },
+        {
+            "caption": "Here it can be seen that NNAT and NNEO have a big difference, they have more deaths:",
+            "key": "w7_seriedetiempo.png",
+            "label": "fig:fro",
+            "material": "preprint",
+            "source": "arxiv",
+            "url": "/api/files/55bbd76b-1838-4b46-ae0b-b9faf8187f8c/w7_seriedetiempo.png"
+        },
+        {
+            "caption": "As can be seen in the graph, our data is in ascending order and has variance. This means that accident notifications increase every year:",
+            "key": "w8_arima.png",
+            "label": "fig:fro",
+            "material": "preprint",
+            "source": "arxiv",
+            "url": "/api/files/55bbd76b-1838-4b46-ae0b-b9faf8187f8c/w8_arima.png"
+        },
+        {
+            "caption": "here we make a summary to see the data:",
+            "key": "w9_nn.png",
+            "label": "fig:fro",
+            "material": "preprint",
+            "source": "arxiv",
+            "url": "/api/files/55bbd76b-1838-4b46-ae0b-b9faf8187f8c/w9_nn.png"
+        },
+        {
+            "caption": "here we make a box and it can be seen that it gives us p-value 0.2037:",
+            "key": "w10_box.png",
+            "label": "fig:fro",
+            "material": "preprint",
+            "source": "arxiv",
+            "url": "/api/files/55bbd76b-1838-4b46-ae0b-b9faf8187f8c/w10_box.png"
+        },
+        {
+            "caption": "Here you can see the forecast for the year 2021 with forecast:",
+            "key": "w11_forcast1.png",
+            "label": "fig:fro",
+            "material": "preprint",
+            "source": "arxiv",
+            "url": "/api/files/55bbd76b-1838-4b46-ae0b-b9faf8187f8c/w11_forcast1.png"
+        }
+    ],
+    "inspire_categories": [
+        {
+            "source": "arxiv",
+            "term": "Data Analysis and Statistics"
+        }
+    ],
+    "license": [
+        {
+            "license": "arXiv nonexclusive-distrib 1.0",
+            "material": "preprint",
+            "url": "http://arxiv.org/licenses/nonexclusive-distrib/1.0/"
+        }
+    ],
+    "preprint_date": "2023-07-25",
+    "titles": [
+        {
+            "source": "arXiv",
+            "title": "Time Series Analysis Applied to Notifications of Work Accidents"
+        }
+    ]
+}
