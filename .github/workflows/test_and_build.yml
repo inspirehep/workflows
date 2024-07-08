@@ -8,7 +8,7 @@ on:
       - main
 
 env:
-  PYTHON_VERSION: 3.8.16
+  PYTHON_VERSION: 3.11.9
   AIRFLOW_HOME: /home/runner/work/airflow-dags/airflow-dags
   REGISTRY: registry.cern.ch
   IMAGE: cern-sis/airflow
@@ -44,7 +44,7 @@ jobs:
       - name: Install Python 3
         uses: actions/setup-python@v4
         with:
-          python-version: 3.8.16
+          python-version: 3.11.9
 
       - name: Run services on docker compose
         run: docker compose up -d postgres redis sftp ftp s3 create_buckets
