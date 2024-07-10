@@ -8,4 +8,5 @@ USER airflow
 
 RUN airflow db init
 COPY requirements.txt ./requirements.txt
-RUN pip install --no-cache-dir --upgrade --user -r requirements.txt
+COPY requirements-test.txt ./requirements-test.txt
+RUN pip install --no-cache-dir --upgrade --user -r requirements.txt -r requirements-test.txt
