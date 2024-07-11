@@ -6,6 +6,10 @@ on:
   pull_request_target:
     branches:
       - main
+
+env:
+  REGISTRY: registry.cern.ch
+  IMAGE: cern-sis/inspire/workflows
 jobs:
   build_test:
     name: Build and Test
@@ -36,8 +40,8 @@ jobs:
         id: build
         uses: cern-sis/gh-workflows/.github/actions/docker-build@v6
         with:
-          registry: registry.cern.ch
-          image: cern-sis/inspire/workflows
+          registry: ${{ env.REGISTRY }}
+          image: ${{ env.IMAGE }}
           tags: |
             type=ref,event=branch
             type=ref,event=pr
@@ -69,5 +73,5 @@ jobs:
         uses: cern-sis/gh-workflows/.github/actions/kubernetes-project-new-images@v6
         with:
           event-type: update
-          images: registry.cern.ch/cern-sis/inspire/workflows@${{ steps.build.outputs.image-digest }}
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE }}@${{ steps.build.outputs.image-digest }}
           token: ${{ secrets.PAT_FIRE_EVENTS_ON_CERN_SIS_KUBERNETES }}
