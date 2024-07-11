@@ -36,8 +36,8 @@ jobs:
         id: build
         uses: cern-sis/gh-workflows/.github/actions/docker-build@v6
         with:
-          registry: ${{ env.REGISTRY }}
-          image: ${{ env.IMAGE }}
+          registry: registry.cern.ch
+          image: cern-sis/inspire/workflows
           tags: |
             type=ref,event=branch
             type=ref,event=pr
