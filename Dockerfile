@@ -1,12 +1,6 @@
 FROM apache/airflow:2.8.3-python3.11
 
-USER root
+COPY --chown=airflow:root dags /opt/airflow/dags/
+COPY --chown=airflow:root requirements.txt ./requirements.txt
 
-RUN mkdir -p ${AIRFLOW_HOME} && chown -R airflow: ${AIRFLOW_HOME}
-
-USER airflow
-
-RUN airflow db init
-COPY requirements.txt ./requirements.txt
-COPY requirements-test.txt ./requirements-test.txt
-RUN pip install --no-cache-dir --upgrade --user -r requirements.txt -r requirements-test.txt
+RUN pip install --no-cache-dir "apache-airflow==${AIRFLOW_VERSION}" -r requirements.txt

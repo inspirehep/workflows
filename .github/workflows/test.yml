@@ -1,0 +1,52 @@
+name: Tests
+
+on:
+  workflow_call:
+    inputs:
+      ref:
+        description: The reference to build
+        type: string
+        required: true
+    outputs:
+      image-id:
+        description: The ID of image that has been built
+        value: ${{ jobs.build.outputs.image-id }}
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  build:
+    uses: ./.github/workflows/build.yml
+    with:
+      ref: ${{ inputs.ref }}
+      image: cern-sis/inspire/backoffice
+      context: .
+      dockerfile: ./compose/production/django/Dockerfile
+    secrets: inherit
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
+
+      - name: Run services on docker compose
+        run: docker compose up -d postgres redis
+
+      - name: List services for tests
+        run: docker ps
+
+      - name: Test
+        run: >
+          docker run
+            -v "$(pwd)"/tests:/opt/airflow/tests
+            -v "$(pwd)"/dags:/opt/airflow/dags
+            -v "$(pwd)"/airflow.cfg:/opt/airflow/airflow.cfg
+            -v "$(pwd)"/requirements-test.txt:/opt/airflow/requirements-test.txt
+            -v "$(pwd)"/data:/opt/airflow/data
+            ${{ inputs.image }}
+            bash -c "pip install -r requirements-text.txt && airflow db init && pytest /opt/airflow/tests"
