@@ -12,6 +12,7 @@ jobs:
         echo ${{ secrets.HARBOR_USERNAME }}
       - run: |
         echo env
+        echo "here"
   lint:
     uses: ./.github/workflows/lint.yml
     with:
