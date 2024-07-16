@@ -45,16 +45,11 @@ jobs:
         with:
           ref: ${{ inputs.ref }}
 
-      - name: Image to test
-        run: >
-          echo "Image ID: ${{ needs.build.outputs.image-id }}"
-
       - name: Test
         run: >
           docker run
           --network=host
           -v "$(pwd)"/tests:/opt/airflow/tests
-          -v "$(pwd)"/dags:/opt/airflow/dags
           -v "$(pwd)"/airflow.cfg:/opt/airflow/airflow.cfg
           -v "$(pwd)"/requirements-test.txt:/opt/airflow/requirements-test.txt
           -v "$(pwd)"/data:/opt/airflow/data
