@@ -45,6 +45,10 @@ jobs:
         with:
           ref: ${{ inputs.ref }}
 
+      - name: Image to test
+        run: >
+          echo "Image ID: ${{ needs.build.outputs.image-id }}"
+
       - name: Test
         run: >
           docker run
