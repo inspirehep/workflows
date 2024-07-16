@@ -14,12 +14,13 @@ jobs:
     with:
       ref: ${{ github.ref }}
   test:
+    needs: [lint]
     uses: ./.github/workflows/test.yml
     with:
       ref: ${{ github.ref }}
     secrets: inherit
   deploy:
-    needs: [lint, test]
+    needs: [test]
     runs-on: ubuntu-latest
     steps:
       - name: send event

@@ -20,8 +20,9 @@ def happy_flow_dag():
     @task()
     def normalize_affiliations(data):
         from hooks.inspire_connection_hook import call_inspire_api_with_hook
-        from include.inspire.affiliations_normalization import \
-            assign_normalized_affiliations
+        from include.inspire.affiliations_normalization import (
+            assign_normalized_affiliations,
+        )
 
         endpoint = "/curation/literature/affiliations-normalization"
         request_data = {"authors": data["authors"], "workflow_id": 1}
