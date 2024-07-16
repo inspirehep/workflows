@@ -59,4 +59,4 @@ jobs:
           -v "$(pwd)"/requirements-test.txt:/opt/airflow/requirements-test.txt
           -v "$(pwd)"/data:/opt/airflow/data
           registry.cern.ch/cern-sis/inspire/workflows@${{ needs.build.outputs.image-id }}
-          bash -c "pip install -r requirements-text.txt && airflow db init && pytest /opt/airflow/tests"
+          bash -c "pip install -r requirements-test.txt && airflow db init && pytest /opt/airflow/tests"
