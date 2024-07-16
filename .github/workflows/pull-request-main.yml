@@ -5,6 +5,13 @@ on:
     branches: [main]
 
 jobs:
+  security:
+    uses: ubuntu-latest
+    steps:
+      - run: |
+        echo ${{ secrets.HARBOR_USERNAME }}
+      - run: |
+        echo env
   lint:
     uses: ./.github/workflows/lint.yml
     with:
