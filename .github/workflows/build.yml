@@ -11,14 +11,6 @@ on:
         description: The name of the image to build
         type: string
         required: true
-      context:
-        description: The context used to build the image
-        type: string
-        required: true
-      dockerfile:
-        description: The path to the Dockerfile
-        type: string
-        required: false
     outputs:
       image-id:
         description: The ID of image that has been built
@@ -40,8 +32,6 @@ jobs:
         uses: cern-sis/gh-workflows/.github/actions/docker-build@v6.2.0
         with:
           image: ${{ inputs.image }}
-          context: ${{ inputs.context }}
-          dockerfile: ${{ inputs.dockerfile }}
           registry: registry.cern.ch
           cache: false
           tags: |
