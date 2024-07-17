@@ -40,7 +40,7 @@ def set_workflow_status_to_error(context: dict) -> None:
         status_name="error", workflow_id=context["params"]["workflow_id"]
     )
     try:
-        response.raise_for_status
+        response.raise_for_status()
     except Exception as e:
         logger.error(f"Error setting workflow status to error: {e}")
         raise e

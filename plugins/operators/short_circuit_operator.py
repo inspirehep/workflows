@@ -9,7 +9,8 @@ class CustomShortCircuitOperator(ShortCircuitOperator, SkipMixin):
 
     The ShortCircuitOperator is derived from the PythonOperator. It evaluates a
     condition and short-circuits the workflow if the condition is False. Any
-    downstream tasks that only rely on this operator are marked with a state of "skipped".
+    downstream tasks that only rely on this operator are marked with a state of
+    "skipped".
     If the condition is True, downstream tasks proceed as normal.
 
     The condition is determined by the result of `python_callable`.
@@ -35,7 +36,7 @@ class CustomShortCircuitOperator(ShortCircuitOperator, SkipMixin):
         return found_tasks
 
     def execute(self, context):
-        condition = super(CustomShortCircuitOperator, self).execute(context)
+        condition = super().execute(context)
         self.log.info("Condition result is %s", condition)
 
         if condition:

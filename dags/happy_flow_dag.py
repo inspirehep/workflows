@@ -9,7 +9,7 @@ from airflow.sensors.sql import SqlSensor
 def happy_flow_dag():
     @task
     def fetch_document(filename: str) -> dict:
-        from include.utils import get_s3_client
+        from include.utils.s3_client import get_s3_client
 
         s3_client = get_s3_client()
         s3_client.download_file("inspire-incoming", filename, f"./{filename}")
@@ -38,7 +38,7 @@ def happy_flow_dag():
             return ["validate"]
         return ["wait_for_approval"]
 
-    sensor = SqlSensor(
+    wait_for_approval = SqlSensor(
         task_id="wait_for_approval",
         conn_id="inspire_db_connection",
         poke_interval=2,
@@ -58,9 +58,9 @@ def happy_flow_dag():
         fetch_document_task
         >> normalize_affiliations_task
         >> auto_approval
-        >> [validate_task, sensor]
+        >> [validate_task, wait_for_approval]
     )
-    sensor >> validate_task
+    wait_for_approval >> validate_task
 
 
 happy_flow_dag()

@@ -1,7 +1,7 @@
 import tenacity
 
 
-def tenacity_retry_kwargs() -> dict:
+def tenacity_retry_kwargs():
     return {
         "wait": tenacity.wait_exponential(),
         "stop": tenacity.stop_after_attempt(5),

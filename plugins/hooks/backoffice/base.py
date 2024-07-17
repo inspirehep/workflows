@@ -1,7 +1,7 @@
 import requests
 from airflow.models import Variable
 from airflow.providers.http.hooks.http import HttpHook
-from hooks.utils import tenacity_retry_kwargs
+from hooks.tenacity_config import tenacity_retry_kwargs
 from requests import Response
 
 
@@ -11,7 +11,8 @@ class BackofficeHook(HttpHook):
 
     :param method: The HTTP method to use for the request (default: "GET").
     :type method: str
-    :param http_conn_id: The ID of the HTTP connection to use (default: "backoffice_conn").
+    :param http_conn_id: The ID of the HTTP connection to use
+        (default: "backoffice_conn").
     :type http_conn_id: str
     """
 

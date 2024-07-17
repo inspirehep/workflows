@@ -13,13 +13,11 @@ from airflow.utils.trigger_rule import TriggerRule
 )
 def process_untill_breakpoint():
     def check_approval(**context):
-        if context["params"]["approved"]:
-            return False
-        return True
+        return not context["params"]["approved"]
 
     @task
     def fetch_document(filename: str) -> dict:
-        from include.utils import get_s3_client
+        from include.utils.s3_client import get_s3_client
 
         s3_client = get_s3_client()
         s3_client.download_file("inspire-incoming", filename, f"./{filename}")
@@ -44,15 +42,13 @@ def process_untill_breakpoint():
         from include.inspire.approval import auto_approve
 
         data = kwargs["task_instance"].xcom_pull(task_ids="normalize_affiliations")
-        if auto_approve(data):
-            return True
-        return False
+        return bool(auto_approve(data))
 
     @task(trigger_rule=TriggerRule.NONE_FAILED)
     def validate():
         return
 
-    approval_check = ShortCircuitOperator(
+    check_approval = ShortCircuitOperator(
         task_id="check_approval",
         ignore_downstream_trigger_rules=False,
         python_callable=check_approval,
@@ -66,7 +62,7 @@ def process_untill_breakpoint():
     validation = validate()
 
     (
-        approval_check
+        check_approval
         >> fetch_document_task
         >> normalize_affiliations_task
         >> auto_approval

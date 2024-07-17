@@ -3,6 +3,9 @@ from requests import Response
 
 
 class InspireHTTPRecordManagementHook(InspireHttpHook):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
     def update_record(
         self, data: dict, pid_type: str, control_number: int, revision_id: str
     ) -> Response:

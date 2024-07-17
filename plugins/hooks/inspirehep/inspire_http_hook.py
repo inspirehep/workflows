@@ -4,7 +4,7 @@ import logging
 import requests
 from airflow.models import Variable
 from airflow.providers.http.hooks.http import HttpHook
-from hooks.utils import tenacity_retry_kwargs
+from hooks.tenacity_config import tenacity_retry_kwargs
 from requests import Response
 
 logger = logging.getLogger()

@@ -2,7 +2,10 @@ import datetime
 
 from airflow.decorators import dag, task
 from airflow.models.param import Param
-from hooks.backoffice import WorkflowManagementHook, WorkflowTicketManagementHook
+from hooks.backoffice.workflow_management_hook import WorkflowManagementHook
+from hooks.backoffice.workflow_ticket_management_hook import (
+    WorkflowTicketManagementHook,
+)
 from hooks.inspirehep.inspire_http_hook import InspireHttpHook
 from hooks.inspirehep.inspire_http_record_management_hook import (
     InspireHTTPRecordManagementHook,

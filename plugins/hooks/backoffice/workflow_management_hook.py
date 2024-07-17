@@ -8,7 +8,8 @@ class WorkflowManagementHook(BackofficeHook):
 
     :param method: The HTTP method to use for the request (default: "GET").
     :type method: str
-    :param http_conn_id: The ID of the HTTP connection to use (default: "backoffice_conn").
+    :param http_conn_id: The ID of the HTTP connection to use
+        (default: "backoffice_conn").
     :type http_conn_id: str
     """
 

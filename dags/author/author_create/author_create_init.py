@@ -3,7 +3,10 @@ import logging
 
 from airflow.decorators import dag, task
 from airflow.models.param import Param
-from hooks.backoffice import WorkflowManagementHook, WorkflowTicketManagementHook
+from hooks.backoffice.workflow_management_hook import WorkflowManagementHook
+from hooks.backoffice.workflow_ticket_management_hook import (
+    WorkflowTicketManagementHook,
+)
 from hooks.inspirehep.inspire_http_hook import InspireHttpHook
 from include.utils.set_workflow_status import set_workflow_status_to_error
 
@@ -18,15 +21,18 @@ logger = logging.getLogger(__name__)
     start_date=datetime.datetime(2024, 5, 5),
     schedule_interval=None,
     catchup=False,
-    on_failure_callback=set_workflow_status_to_error,  # TODO: what if callback fails? Data in backoffice not up to date!
+    # TODO: what if callback fails? Data in backoffice not up to date!
+    on_failure_callback=set_workflow_status_to_error,
 )
 def author_create_initialization_dag():
     """
     Initialize a DAG for author create workflow.
 
     Tasks:
-    1. create_ticket_on_author_create: Creates a ticket using the InspireHttpHook to call the API endpoint.
-    2. set_author_create_workflow_status_to_approval: Sets the workflow status to "approval" using the WorkflowManagementHook.
+    1. create_ticket_on_author_create: Creates a ticket using the InspireHttpHook
+        to call the API endpoint.
+    2. set_author_create_workflow_status_to_approval: Sets the workflow status
+        to "approval" using the WorkflowManagementHook.
 
     """
     inspire_http_hook = InspireHttpHook()

@@ -4,7 +4,10 @@ import logging
 from airflow.decorators import dag, task
 from airflow.models.param import Param
 from airflow.utils.trigger_rule import TriggerRule
-from hooks.backoffice import WorkflowManagementHook, WorkflowTicketManagementHook
+from hooks.backoffice.workflow_management_hook import WorkflowManagementHook
+from hooks.backoffice.workflow_ticket_management_hook import (
+    WorkflowTicketManagementHook,
+)
 from hooks.inspirehep.inspire_http_hook import InspireHttpHook
 from hooks.inspirehep.inspire_http_record_management_hook import (
     InspireHTTPRecordManagementHook,
@@ -29,15 +32,18 @@ logger = logging.getLogger(__name__)
     on_failure_callback=set_workflow_status_to_error,  # TODO: what if callback fails? Data in backoffice not up to date!
 )
 def author_create_approved_dag():
-    """
-    Defines the DAG for the author creation workflow after curator's approval.
+    """Defines the DAG for the author creation workflow after curator's approval.
 
     Tasks:
-    1. author_check_approval: Branching for the workflow: based on create_ticket parameter
-    2. create_ticket_on_author_approval: Creates a ticket using the InspireHttpHook to call the API endpoint.
-    3. create_author_on_inspire: Updates the author record on INSPIRE using the InspireHTTPRecordManagementHook.
+    1. author_check_approval: Branching for the workflow: based on create_ticket
+        parameter
+    2. create_ticket_on_author_approval: Creates a ticket using the InspireHttpHook to
+        call the API endpoint.
+    3. create_author_on_inspire: Updates the author record on INSPIRE using the
+        InspireHTTPRecordManagementHook.
     4. close_ticket: Closes the ticket associated with the author creation workflow.
-    5. set_author_create_workflow_status_to_completed: Sets the status of the author creation workflow to 'completed'.
+    5. set_author_create_workflow_status_to_completed: Sets the status of the author
+        creation workflow to 'completed'.
 
     """
     inspire_http_hook = InspireHttpHook()
