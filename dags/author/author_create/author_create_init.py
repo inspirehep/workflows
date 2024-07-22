@@ -47,6 +47,14 @@ def author_create_initialization_dag():
         )
 
     @task()
+    def set_schema(**context):
+        schema = "https://inspirehep.net/schemas/records/authors.json"
+        workflow_management_hook.partial_update_workflow(
+            workflow_id=context["params"]["workflow_id"],
+            workflow_partial_update_data={"data": {"$schema": schema}},
+        )
+
+    @task()
     def create_author_create_user_ticket(**context: dict) -> None:
         endpoint = "/api/tickets/create"
         request_data = {
@@ -78,6 +86,7 @@ def author_create_initialization_dag():
     # task dependencies
     (
         set_workflow_status_to_running()
+        >> set_schema()
         >> create_author_create_user_ticket()
         >> set_author_create_workflow_status_to_approval()
     )
